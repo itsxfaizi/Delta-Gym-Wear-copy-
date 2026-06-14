@@ -1,9 +1,12 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { products } from "@/lib/products";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/store/cart";
 
@@ -29,7 +32,7 @@ export function CartDrawer() {
         >
           <ShoppingBag className="size-5" />
           {count > 0 && (
-            <span className="absolute right-0 top-0 grid size-5 place-items-center rounded-full bg-brand-yellow text-[10px] font-black text-black">
+            <span aria-live="polite" className="absolute right-0 top-0 grid size-5 place-items-center bg-brand-yellow text-[10px] font-black text-black">
               {count}
             </span>
           )}
@@ -42,46 +45,64 @@ export function CartDrawer() {
         </div>
         <div className="flex-1 divide-y divide-zinc-200 overflow-y-auto">
           {items.length === 0 ? (
-            <div className="grid h-56 place-items-center text-center">
+            <div className="grid min-h-80 place-items-center text-center">
               <div>
                 <ShoppingBag className="mx-auto mb-4 size-8 text-zinc-300" />
-                <p className="font-black uppercase">Nothing here yet.</p>
-                <p className="mt-1 text-sm text-brand-muted">Train with intent. Choose with intent.</p>
+                <p className="font-black uppercase">Your cart is empty</p>
+                <p className="mt-2 text-sm font-medium text-brand-muted">Explore the current Delta range.</p>
+                <SheetClose asChild>
+                  <Button asChild variant="yellow" className="mt-6">
+                    <Link href="/shop">Shop the range</Link>
+                  </Button>
+                </SheetClose>
               </div>
             </div>
           ) : (
             items.map((item) => {
               const key = `${item.id}-${item.size}`;
+              const image = item.image ?? products.find((product) => product.id === item.id)?.images[0];
               return (
                 <div key={key} className="py-5">
-                  <div className="flex justify-between gap-4">
-                    <div>
+                  <div className="flex gap-4">
+                    <div className="relative size-24 shrink-0 overflow-hidden bg-zinc-900">
+                      {image ? (
+                        <Image src={image} alt={item.name} fill sizes="96px" className="object-cover" />
+                      ) : (
+                        <ShoppingBag aria-hidden="true" className="absolute inset-0 m-auto size-6 text-zinc-500" />
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
                       <h3 className="font-black uppercase">{item.name}</h3>
                       <p className="mt-1 text-xs uppercase tracking-widest text-brand-muted">Size {item.size}</p>
                     </div>
-                    <button aria-label={`Remove ${item.name}`} onClick={() => remove(key)} className="self-start p-2 focus-visible:ring-2 focus-visible:ring-brand-yellow">
+                    <button aria-label={`Remove ${item.name}`} onClick={() => remove(key)} className="grid size-11 shrink-0 place-items-center self-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow">
                       <Trash2 className="size-4" />
                     </button>
                   </div>
                   <div className="mt-4 flex items-center justify-between">
                     <div className="flex items-center border border-zinc-300">
-                      <button aria-label="Decrease quantity" onClick={() => update(key, item.qty - 1)} className="grid size-9 place-items-center"><Minus className="size-3" /></button>
-                      <span className="w-8 text-center text-sm font-black">{item.qty}</span>
-                      <button aria-label="Increase quantity" onClick={() => update(key, item.qty + 1)} className="grid size-9 place-items-center"><Plus className="size-3" /></button>
+                      <button aria-label={`Decrease ${item.name} quantity`} onClick={() => update(key, item.qty - 1)} disabled={item.qty <= 1} className="grid size-11 place-items-center disabled:cursor-not-allowed disabled:opacity-35"><Minus className="size-3" /></button>
+                      <span className="w-10 text-center text-sm font-black" aria-live="polite">{item.qty}</span>
+                      <button aria-label={`Increase ${item.name} quantity`} onClick={() => update(key, item.qty + 1)} className="grid size-11 place-items-center"><Plus className="size-3" /></button>
                     </div>
-                    <span className="font-black">{formatPrice(item.price * item.qty)}</span>
+                    <span className="font-black tabular-nums">{formatPrice(item.price * item.qty)}</span>
                   </div>
                 </div>
               );
             })
           )}
         </div>
-        <div className="border-t border-zinc-200 pt-5">
+        <div className="border-t border-zinc-200 pt-5" style={{ paddingBottom: "max(1.25rem, env(safe-area-inset-bottom))" }}>
           <div className="mb-5 flex items-center justify-between text-lg font-black uppercase">
-            <span>Subtotal</span><span>{formatPrice(mounted ? total() : 0)}</span>
+            <span>Subtotal</span><span className="tabular-nums">{formatPrice(mounted ? total() : 0)}</span>
           </div>
-          <Button variant="yellow" className="w-full" disabled={!items.length}>Checkout</Button>
-          <p className="mt-3 text-center text-[11px] text-brand-muted">Taxes and shipping calculated at checkout.</p>
+          <Button variant="yellow" className="w-full" disabled>Checkout unavailable</Button>
+          <SheetClose asChild>
+            <Link href="/shop" className="mt-2 flex min-h-11 items-center justify-center text-xs font-black uppercase tracking-widest underline decoration-brand-yellow decoration-2 underline-offset-4">
+              Continue shopping
+            </Link>
+          </SheetClose>
+          <p className="mt-2 text-center text-[11px] text-brand-muted">Online checkout is not connected in this build.</p>
         </div>
       </SheetContent>
     </Sheet>

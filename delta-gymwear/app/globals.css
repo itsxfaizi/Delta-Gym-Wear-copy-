@@ -3,22 +3,17 @@
 :root {
   --background: #ffffff;
   --foreground: #0a0a0a;
-  --brand-yellow: #f5c100;
-  --brand-black: #0a0a0a;
-  --brand-white: #ffffff;
-  --brand-gray: #1a1a1a;
-  --brand-muted: #6b6b6b;
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-brand-yellow: var(--brand-yellow);
-  --color-brand-black: var(--brand-black);
-  --color-brand-white: var(--brand-white);
-  --color-brand-gray: var(--brand-gray);
-  --color-brand-muted: var(--brand-muted);
-  --font-sans: var(--font-geist-sans);
+  --color-brand-yellow: #f5c100;
+  --color-brand-black: #0a0a0a;
+  --color-brand-white: #ffffff;
+  --color-brand-gray: #1a1a1a;
+  --color-brand-muted: #6b6b6b;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 * {
@@ -33,7 +28,7 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-weight: 500;
 }
 
@@ -43,9 +38,14 @@ input {
   -webkit-tap-highlight-color: transparent;
 }
 
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--color-brand-yellow);
+  outline-offset: 2px;
+}
+
 ::selection {
-  background: var(--brand-yellow);
-  color: var(--brand-black);
+  background: var(--color-brand-yellow);
+  color: var(--color-brand-black);
 }
 
 @keyframes marquee {
@@ -54,10 +54,22 @@ input {
 }
 
 .animate-marquee {
-  animation: marquee 34s linear infinite;
+  animation: marquee 25s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .animate-marquee { animation: none; }
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .animate-marquee {
+    animation: none !important;
+    transform: none !important;
+  }
 }

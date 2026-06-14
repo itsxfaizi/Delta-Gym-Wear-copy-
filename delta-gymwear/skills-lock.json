@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "context-map": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "skillPath": "skills/context-map/SKILL.md",
+      "computedHash": "cca0523289057f0f6fbff2c3ead5063359dd2482a451bf8694eac0f282185786"
+    },
+    "use-my-browser": {
+      "source": "xixu-me/skills",
+      "sourceType": "github",
+      "skillPath": "skills/use-my-browser/SKILL.md",
+      "computedHash": "c8c56bdd40ef33bb1848b6e051eb156c3b523f7b89edb838719962155074548f"
+    }
+  }
+}

@@ -15,7 +15,7 @@ export function SelectTrigger({
   return (
     <SelectPrimitive.Trigger
       className={cn(
-        "flex h-11 min-w-52 items-center justify-between border border-zinc-300 bg-white px-4 text-sm font-bold outline-none focus:ring-2 focus:ring-brand-yellow",
+        "flex h-11 min-w-0 items-center justify-between border border-zinc-300 bg-white px-4 text-sm font-bold outline-none transition duration-150 focus:ring-2 focus:ring-brand-yellow",
         className,
       )}
       {...props}
@@ -34,7 +34,7 @@ export function SelectContent({
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
-        className={cn("z-[100] min-w-52 border border-zinc-200 bg-white p-1 shadow-xl", className)}
+        className={cn("z-[100] min-w-52 border border-zinc-200 bg-white p-1", className)}
         {...props}
       >
         <SelectPrimitive.Viewport>{children}</SelectPrimitive.Viewport>

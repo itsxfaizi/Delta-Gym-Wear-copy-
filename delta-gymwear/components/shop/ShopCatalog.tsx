@@ -35,25 +35,26 @@ export function ShopCatalog() {
     const params = new URLSearchParams(searchParams.toString());
     if (value === "featured") params.delete("sort");
     else params.set("sort", value);
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
   }
 
   return (
     <div className="grid gap-8 lg:grid-cols-[240px_1fr] lg:gap-12">
       <div className="hidden lg:block"><FilterSidebar /></div>
-      <div>
-        <div className="mb-7 flex items-center justify-between gap-4">
+      <div className="min-w-0">
+        <div className="mb-7 grid grid-cols-[1fr_auto] items-center gap-3 sm:flex sm:justify-between">
           <p className="text-sm font-bold text-brand-muted">{filtered.length} products</p>
-          <div className="flex gap-3">
+          <div className="grid grid-cols-[auto_minmax(0,1fr)] gap-2 sm:flex sm:gap-3">
             <Sheet>
               <SheetTrigger asChild><Button variant="outline" className="border-zinc-300 text-black lg:hidden"><SlidersHorizontal className="size-4" /> Filter</Button></SheetTrigger>
-              <SheetContent side="left" title="Product filters"><h2 className="mb-8 text-3xl font-black uppercase">Filter products</h2><FilterSidebar /></SheetContent>
+              <SheetContent side="left" title="Product filters" description="Choose category, size, or price filters."><h2 className="mb-8 text-3xl font-black uppercase">Filter products</h2><FilterSidebar /></SheetContent>
             </Sheet>
             <Select value={searchParams.get("sort") ?? "featured"} onValueChange={setSort}>
-              <SelectTrigger aria-label="Sort products"><SelectValue /></SelectTrigger>
+              <SelectTrigger aria-label="Sort products" className="w-full sm:w-52"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="featured">Featured</SelectItem>
-                <SelectItem value="low">Price Low–High</SelectItem>
+                <SelectItem value="low">Price Low-High</SelectItem>
                 <SelectItem value="newest">Newest</SelectItem>
               </SelectContent>
             </Select>

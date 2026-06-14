@@ -22,9 +22,31 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   const product = getProductBySlug(slug);
   if (!product) notFound();
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description,
+    image: product.images.map((image) => new URL(image, "https://deltagymwear.com").toString()),
+    sku: product.id,
+    category: product.category,
+    offers: {
+      "@type": "Offer",
+      priceCurrency: product.currency,
+      price: product.price,
+      url: `https://deltagymwear.com/shop/${product.slug}`,
+    },
+  };
+
   return (
-    <div className="bg-white px-5 pb-24 pt-32 sm:px-8 lg:px-12">
-      <div className="mx-auto max-w-[1500px]"><ProductDetail product={product} /></div>
+    <div className="bg-white pb-24 pt-32">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd).replace(/</g, "\\u003c") }}
+      />
+      <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-12 xl:px-20 2xl:px-28">
+        <ProductDetail product={product} />
+      </div>
     </div>
   );
 }

@@ -9,6 +9,7 @@ export interface CartItem {
   price: number;
   qty: number;
   size: string;
+  image?: string;
 }
 
 interface CartStore {
@@ -41,12 +42,9 @@ export const useCartStore = create<CartStore>()(
         set((state) => ({ items: state.items.filter((item) => `${item.id}-${item.size}` !== id) })),
       update: (id, qty) =>
         set((state) => ({
-          items:
-            qty <= 0
-              ? state.items.filter((item) => `${item.id}-${item.size}` !== id)
-              : state.items.map((item) =>
-                  `${item.id}-${item.size}` === id ? { ...item, qty } : item,
-                ),
+          items: state.items.map((item) =>
+            `${item.id}-${item.size}` === id ? { ...item, qty: Math.max(1, qty) } : item,
+          ),
         })),
       total: () => get().items.reduce((sum, item) => sum + item.price * item.qty, 0),
     }),

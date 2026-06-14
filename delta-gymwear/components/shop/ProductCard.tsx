@@ -7,19 +7,26 @@ import { formatPrice } from "@/lib/utils";
 export function ProductCard({ product }: { product: Product }) {
   return (
     <article className="group min-w-0">
-      <Link href={`/shop/${product.slug}`} className="block outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow">
-        <div className="relative aspect-[4/5] overflow-hidden bg-zinc-900">
-          <Image src={product.images[0]} alt={product.name} fill sizes="(max-width: 768px) 78vw, (max-width: 1280px) 33vw, 20vw" className="object-cover transition duration-500 group-hover:scale-[1.025]" />
-          <div className="absolute inset-x-3 bottom-3 flex translate-y-3 items-center justify-between bg-brand-yellow px-4 py-3 text-xs font-black uppercase tracking-widest text-black opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-            Quick view <ArrowUpRight className="size-4" />
+      <Link href={`/shop/${product.slug}`} className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow">
+        <div className="relative aspect-[3/4] overflow-hidden bg-zinc-900">
+          <Image
+            src={product.images[0]}
+            alt={product.name}
+            fill
+            sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, (max-width: 1535px) 33vw, 25vw"
+            className="object-cover transition duration-150 motion-reduce:transition-none md:grayscale md:group-hover:grayscale-0"
+          />
+          <div className="absolute inset-x-3 bottom-3 flex min-h-11 items-center justify-between bg-brand-yellow px-4 py-3 text-xs font-black uppercase tracking-widest text-black transition duration-150 md:translate-y-3 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-focus-within:translate-y-0 md:group-focus-within:opacity-100">
+            View product <ArrowUpRight className="size-4" />
           </div>
         </div>
         <div className="pt-4">
           <div className="flex justify-between gap-3">
             <h3 className="font-black uppercase tracking-tight">{product.name}</h3>
-            <span className="shrink-0 text-sm font-black">{formatPrice(product.price)}</span>
+            <span className="shrink-0 text-sm font-black tabular-nums">{formatPrice(product.price)}</span>
           </div>
-          <p className="mt-1 text-sm text-brand-muted">{product.subtitle}</p>
+          <p className="mt-1 text-sm font-medium text-brand-muted">{product.subtitle}</p>
+          <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-brand-muted">Sizes {product.sizes.join(" / ")}</p>
         </div>
       </Link>
     </article>

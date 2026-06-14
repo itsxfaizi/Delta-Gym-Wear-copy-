@@ -8,15 +8,22 @@ const messages = [
 ];
 
 export function MarqueeBanner() {
-  const items = [...messages, ...messages];
   return (
     <div className="relative z-[70] overflow-hidden bg-brand-black py-2 text-brand-yellow">
       <div className="animate-marquee flex w-max items-center whitespace-nowrap">
-        {items.map((message, index) => (
-          <span key={`${message}-${index}`} className="flex items-center text-[10px] font-black tracking-[0.22em] sm:text-xs">
-            <span className="mx-8 size-1.5 rotate-45 bg-brand-yellow" />
-            {message}
-          </span>
+        {[false, true].map((duplicate) => (
+          <div
+            key={duplicate ? "duplicate" : "primary"}
+            aria-hidden={duplicate || undefined}
+            className="flex items-center"
+          >
+            {messages.map((message) => (
+              <span key={message} className="flex items-center text-[10px] font-black tracking-[0.22em] sm:text-xs">
+                <span aria-hidden="true" className="mx-8 text-brand-yellow">&middot;</span>
+                {message}
+              </span>
+            ))}
+          </div>
         ))}
       </div>
     </div>
