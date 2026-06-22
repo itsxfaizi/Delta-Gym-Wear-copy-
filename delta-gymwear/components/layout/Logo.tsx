@@ -1,17 +1,26 @@
+import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-export function Logo({ className }: { className?: string }) {
+export function Logo({ className, inverted = false }: { className?: string; inverted?: boolean }) {
   return (
     <Link
       href="/"
       aria-label="Delta home"
-      className={cn("inline-flex items-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow", className)}
+      className={cn(
+        "relative block h-9 w-36 overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow",
+        inverted && "invert",
+        className,
+      )}
     >
-      <svg aria-hidden="true" viewBox="0 0 40 35" className="h-7 w-8 fill-brand-yellow">
-        <path d="M20 0 40 35H0L20 0Zm0 11.5L10.5 28h19L20 11.5Z" />
-      </svg>
-      <span className="text-xl font-black tracking-[-0.08em] text-brand-yellow">DELTA</span>
+      <Image
+        src="/images/delta-logo.png"
+        alt="Delta Gym Wear"
+        fill
+        priority
+        sizes="144px"
+        className="object-cover"
+      />
     </Link>
   );
 }

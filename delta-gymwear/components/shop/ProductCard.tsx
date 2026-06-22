@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import type { Product } from "@/lib/products";
+import { primaryImage, type Product } from "@/lib/products";
 import { formatPrice } from "@/lib/utils";
 
 export function ProductCard({ product }: { product: Product }) {
@@ -10,12 +10,14 @@ export function ProductCard({ product }: { product: Product }) {
       <Link href={`/shop/${product.slug}`} className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow">
         <div className="relative aspect-[3/4] overflow-hidden bg-zinc-900">
           <Image
-            src={product.images[0]}
+            src={primaryImage(product)}
             alt={product.name}
             fill
             sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, (max-width: 1535px) 33vw, 25vw"
-            className="object-cover transition duration-150 motion-reduce:transition-none md:grayscale md:group-hover:grayscale-0"
+            loading="lazy"
+            className="object-cover transition duration-300 motion-reduce:transition-none group-hover:scale-[1.02]"
           />
+          <span className="absolute left-3 top-3 bg-brand-black px-3 py-2 text-[10px] font-black uppercase tracking-widest text-white">Performance tested</span>
           <div className="absolute inset-x-3 bottom-3 flex min-h-11 items-center justify-between bg-brand-yellow px-4 py-3 text-xs font-black uppercase tracking-widest text-black transition duration-150 md:translate-y-3 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-focus-within:translate-y-0 md:group-focus-within:opacity-100">
             View product <ArrowUpRight className="size-4" />
           </div>

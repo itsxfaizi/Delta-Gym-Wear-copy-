@@ -1,0 +1,1 @@
+ALTER TABLE public."_ProductToTag" ENABLE ROW LEVEL SECURITY;

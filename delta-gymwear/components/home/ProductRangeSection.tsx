@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { products } from "@/lib/products";
+import type { Product } from "@/lib/products";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-export function ProductRangeSection() {
+export function ProductRangeSection({ products }: { products: Product[] }) {
   return (
     <section className="bg-white py-16 md:py-24 lg:py-32">
       <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-12 xl:px-20 2xl:px-28">
@@ -17,7 +17,7 @@ export function ProductRangeSection() {
         </div>
         <ScrollArea className="-mx-4 pb-5 sm:-mx-6 lg:mx-0">
           <div className="flex snap-x gap-4 px-4 pb-5 sm:px-6 lg:grid lg:grid-cols-4 lg:px-0 2xl:grid-cols-5">
-            {products.map((product) => <div key={product.id} className="w-[78vw] shrink-0 snap-start sm:w-[42vw] lg:w-auto"><ProductCard product={product} /></div>)}
+            {products.slice(0, 5).map((product) => <div key={product.id} className="w-[78vw] shrink-0 snap-start sm:w-[42vw] lg:w-auto"><ProductCard product={product} /></div>)}
           </div>
         </ScrollArea>
       </div>

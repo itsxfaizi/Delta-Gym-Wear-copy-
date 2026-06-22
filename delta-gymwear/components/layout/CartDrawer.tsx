@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { products } from "@/lib/products";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/store/cart";
 
@@ -28,7 +27,7 @@ export function CartDrawer() {
       <SheetTrigger asChild>
         <button
           aria-label={`Open cart with ${count} items`}
-          className="relative grid size-11 place-items-center text-white outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow"
+          className="relative grid size-11 place-items-center text-brand-black outline-none focus-visible:ring-2 focus-visible:ring-brand-yellow"
         >
           <ShoppingBag className="size-5" />
           {count > 0 && (
@@ -59,8 +58,8 @@ export function CartDrawer() {
             </div>
           ) : (
             items.map((item) => {
-              const key = `${item.id}-${item.size}`;
-              const image = item.image ?? products.find((product) => product.id === item.id)?.images[0];
+              const key = item.id;
+              const image = item.image;
               return (
                 <div key={key} className="py-5">
                   <div className="flex gap-4">
@@ -96,13 +95,17 @@ export function CartDrawer() {
           <div className="mb-5 flex items-center justify-between text-lg font-black uppercase">
             <span>Subtotal</span><span className="tabular-nums">{formatPrice(mounted ? total() : 0)}</span>
           </div>
-          <Button variant="yellow" className="w-full" disabled>Checkout unavailable</Button>
+          <SheetClose asChild>
+            <Button asChild variant="yellow" className="w-full">
+              <Link href="/checkout">Checkout</Link>
+            </Button>
+          </SheetClose>
           <SheetClose asChild>
             <Link href="/shop" className="mt-2 flex min-h-11 items-center justify-center text-xs font-black uppercase tracking-widest underline decoration-brand-yellow decoration-2 underline-offset-4">
               Continue shopping
             </Link>
           </SheetClose>
-          <p className="mt-2 text-center text-[11px] text-brand-muted">Online checkout is not connected in this build.</p>
+          <p className="mt-2 text-center text-[11px] text-brand-muted">Cash on delivery. No advance payment required.</p>
         </div>
       </SheetContent>
     </Sheet>
