@@ -1,10 +1,11 @@
 import { AdminPage, AdminTable } from "@/components/admin/AdminPage";
 import { prisma } from "@/lib/prisma";
+import type { Coupon } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminCouponsPage() {
-  const coupons = await prisma.coupon.findMany({ orderBy: { createdAt: "desc" } });
+  const coupons: Coupon[] = await prisma.coupon.findMany({ orderBy: { createdAt: "desc" } });
 
   return (
     <AdminPage title="Coupons">

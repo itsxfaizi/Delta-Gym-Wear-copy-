@@ -20,6 +20,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  typescript: {
+    ignoreBuildErrors: false,
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "picsum.photos" },
